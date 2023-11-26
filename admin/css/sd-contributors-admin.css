@@ -1,0 +1,9 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+#sd_list {
+    height: 150px;
+    overflow: auto;
+}
