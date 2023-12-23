@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
@@ -78,7 +77,6 @@ class Sd_Contributors {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
 	}
 
 	/**
@@ -87,7 +85,7 @@ class Sd_Contributors {
 	 * Include the following files that make up the plugin:
 	 *
 	 * - Sd_Contributors_Loader. Orchestrates the hooks of the plugin.
-	 * - Sd_Contributors_i18n. Defines internationalization functionality.
+	 * - Sd_Contributors_I18n. Defines internationalization functionality.
 	 * - Sd_Contributors_Admin. Defines all hooks for the admin area.
 	 * - Sd_Contributors_Public. Defines all hooks for the public side of the site.
 	 *
@@ -103,33 +101,32 @@ class Sd_Contributors {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sd-contributors-loader.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-sd-contributors-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sd-contributors-i18n.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-sd-contributors-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sd-contributors-admin.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-sd-contributors-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-sd-contributors-public.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-sd-contributors-public.php';
 
 		$this->loader = new Sd_Contributors_Loader();
-
 	}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Sd_Contributors_i18n class in order to set the domain and to register the hook
+	 * Uses the Sd_Contributors_I18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -137,10 +134,9 @@ class Sd_Contributors {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Sd_Contributors_i18n();
+		$plugin_i18n = new Sd_Contributors_I18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
 	}
 
 	/**
@@ -158,7 +154,6 @@ class Sd_Contributors {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'create_meta_box' );
 		$this->loader->add_action( 'save_post', $plugin_admin, 'save_meta_box' );
-
 	}
 
 	/**
@@ -176,7 +171,6 @@ class Sd_Contributors {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_filter( 'the_content', $plugin_public, 'display_contributors', 99 );
 		$this->loader->add_filter( 'posts_where', $plugin_public, 'modify_author_archive_query' );
-		$this->loader->add_filter( 'wp', $plugin_public, 'change_author_data' );
 	}
 
 	/**
@@ -218,5 +212,4 @@ class Sd_Contributors {
 	public function get_version() {
 		return $this->version;
 	}
-
 }

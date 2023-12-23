@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Define the internationalization functionality
  *
@@ -24,7 +23,7 @@
  * @subpackage Sd_Contributors/includes
  * @author     Shweta Danej <shwetadanej@gmail.com>
  */
-class Sd_Contributors_i18n {
+class Sd_Contributors_I18n {
 
 
 	/**
@@ -39,9 +38,5 @@ class Sd_Contributors_i18n {
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);
-
 	}
-
-
-
 }

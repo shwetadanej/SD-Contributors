@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The public-facing functionality of the plugin.
  *
@@ -20,8 +19,8 @@
  * @subpackage Sd_Contributors/public
  * @author     Shweta Danej <shwetadanej@gmail.com>
  */
-class Sd_Contributors_Public
-{
+class Sd_Contributors_Public {
+
 
 	/**
 	 * The ID of this plugin.
@@ -45,14 +44,13 @@ class Sd_Contributors_Public
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string $plugin_name       The name of the plugin.
+	 * @param      string $version    The version of this plugin.
 	 */
-	public function __construct($plugin_name, $version)
-	{
+	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 	}
 
 	/**
@@ -60,8 +58,7 @@ class Sd_Contributors_Public
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles()
-	{
+	public function enqueue_styles() {
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -75,7 +72,7 @@ class Sd_Contributors_Public
 		 * class.
 		 */
 
-		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/sd-contributors-public.css', array(), $this->version, 'all');
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/sd-contributors-public.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -83,8 +80,7 @@ class Sd_Contributors_Public
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts()
-	{
+	public function enqueue_scripts() {
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -98,7 +94,7 @@ class Sd_Contributors_Public
 		 * class.
 		 */
 
-		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/sd-contributors-public.js', array('jquery'), $this->version, false);
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/sd-contributors-public.js', array( 'jquery' ), $this->version, false );
 	}
 
 	/**
@@ -108,57 +104,40 @@ class Sd_Contributors_Public
 	 * @return string
 	 * @since    1.0.0
 	 */
-	function display_contributors($content)
-	{
+	public function display_contributors( $content ) {
 		global $post;
-		$id = $post->ID;
-		$contributors = get_post_meta($id, 'sd_contributors', true);
-		if ($contributors) {
-			$content .= sprintf("<div id='sd_contributors'><p>%s</p><ul>", __("Contributors", "sd-contributors"));
-			foreach ($contributors as $value) {
-				$display_name = get_userdata($value)->display_name;
-				$avatar = get_avatar_url($value, array('size' => '35'));
-				$url = get_author_posts_url($value);
-				$content .= sprintf("<li><img src='%s'><a href='%s'>%s</a></li>", $avatar, $url, $display_name);
+		$id           = $post->ID;
+		$contributors = get_post_meta( $id, 'sd_contributors', true );
+		if ( $contributors ) {
+			$content .= sprintf( "<div id='sd_contributors'><p>%s</p><ul>", __( 'Contributors', 'sd-contributors' ) );
+			foreach ( $contributors as $value ) {
+				$display_name = get_userdata( $value )->display_name;
+				$avatar       = get_avatar_url( $value, array( 'size' => '35' ) );
+				$url          = get_author_posts_url( $value );
+				$content     .= sprintf( "<li><img src='%s'><a href='%s'>%s</a></li>", $avatar, $url, $display_name );
 			}
-			$content .= sprintf("</ul></div>");
+			$content .= sprintf( '</ul></div>' );
 		}
 		return $content;
 	}
 
 	/**
-	 * Show list of post on the author archive page for which contributors are assigned 
+	 * Show list of post on the author archive page for which contributors are assigned
 	 *
 	 * @param string $where
 	 * @return string
 	 * @since    1.0.0
 	 */
-	function modify_author_archive_query($where)
-	{
-		if (!is_admin() && is_main_query() && is_author()) {
-			$author = get_user_by('slug', get_query_var('author_name'));
+	public function modify_author_archive_query( $where ) {
+		if ( ! is_admin() && is_main_query() && is_author() ) {
+			$author    = get_user_by( 'slug', get_query_var( 'author_name' ) );
 			$author_id = $author->ID;
-			$post_ids = get_user_meta($author_id, 'sd_contributor_post', true);
-			if ($post_ids) {
-				$post_ids = implode(",", $post_ids);
-				$where .= "OR ID IN ($post_ids)";
+			$post_ids  = get_user_meta( $author_id, 'sd_contributor_post', true );
+			if ( $post_ids ) {
+				$post_ids = implode( ',', $post_ids );
+				$where   .= "OR ID IN ($post_ids)";
 			}
 		}
 		return $where;
-	}
-
-	/**
-	 * Set author data for the author page
-	 *
-	 * @return void
-	 * @since    1.0.0
-	 */
-	function change_author_data()
-	{
-		if (!is_admin() && is_author()) {
-			global $authordata;
-			$author = get_user_by('slug', get_query_var('author_name'));
-			$authordata = $author;
-		}
 	}
 }

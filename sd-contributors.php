@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The plugin bootstrap file
  *
@@ -77,6 +76,5 @@ function run_sd_contributors() {
 
 	$plugin = new Sd_Contributors();
 	$plugin->run();
-
 }
 run_sd_contributors();
