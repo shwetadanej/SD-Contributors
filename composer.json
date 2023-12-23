@@ -1,5 +1,5 @@
 {
-    "name": "shweta/sd-contributors",
+    "name": "shweta/sd-packages",
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
