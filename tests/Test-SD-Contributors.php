@@ -81,9 +81,9 @@ class SDContributorsTest extends TestCase {
         ));
         
         // Instantiate your class
-        $yourObject = new Sd_Contributors_Admin("sd-contributors", "1.0.0");
+        $contributorsObject = new Sd_Contributors_Admin("sd-contributors", "1.0.0");
 
         // Call the function
-        $yourObject->save_meta_box($postId);
+        $contributorsObject->save_meta_box($postId);
     }
 }
