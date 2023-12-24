@@ -24,14 +24,14 @@ class SDContributorsTest extends TestCase {
         $_POST['sd_authors'] = array(1, 2);
         $sd_authors = $_POST['sd_authors'];
 
-        // Set up expectations for get_post_type
+        // check post type
         \WP_Mock::userFunction('get_post_type', array(
             'args' => $postId,
             'times' => 1,
             'return' => 'post',
         ));
 
-        // Set up expectations for wp_verify_nonce
+        // verify post nonce
         \WP_Mock::userFunction('wp_verify_nonce', array(
             'args' => array($_POST['save_contributor_action_nonce_field'], 'save_contributor_action_nonce'),
             'times' => 1,
@@ -39,30 +39,32 @@ class SDContributorsTest extends TestCase {
             'passthru' => true,
         ));
 
-        // Mock sanitize_text_field
+        // sanitize selected authors array
         \WP_Mock::userFunction('sanitize_text_field', array(
             'times' => count($sd_authors),
             'return_in_order' => array(1, 2),
         ));
 
+        // check for extra slashes
         \WP_Mock::userFunction('wp_unslash', array(
             'args' => array($sd_authors),
             'return' => $sd_authors,
         ));
 
-        // Set up expectations for get_post_meta
+        // get existing contributors of the selected post
         \WP_Mock::userFunction('get_post_meta', array(
             'args' => array($postId, 'sd_contributors', true),
             'times' => 1,
             'return' => array(3),
         ));
 
-        // Set up expectations for update_post_meta
+        // update the post with newly selected contributors
         \WP_Mock::userFunction('update_post_meta', array(
             'args' => array($postId, 'sd_contributors', $sd_authors),
             'times' => 1,
         ));
 
+        // get existing post of newly selected authors
         \WP_Mock::userFunction('get_user_meta', array(
             'times' => 2,
             'return_in_order' => array(
@@ -71,7 +73,7 @@ class SDContributorsTest extends TestCase {
             ),
         ));
         
-
+        // update the user meta with existing + newly selected post 
         \WP_Mock::userFunction('update_user_meta', array(
             'times' => 2,
             'return_in_order' => array(
@@ -80,10 +82,10 @@ class SDContributorsTest extends TestCase {
             ),
         ));
         
-        // Instantiate your class
+        // Created object of a call
         $contributorsObject = new Sd_Contributors_Admin("sd-contributors", "1.0.0");
 
-        // Call the function
+        // call save meta box function
         $contributorsObject->save_meta_box($postId);
     }
 }
