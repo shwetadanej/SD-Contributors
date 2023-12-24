@@ -1,4 +1,5 @@
 <?php
+namespace SD\ContributorsAdmin;
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -132,37 +133,36 @@ class Sd_Contributors_Admin {
 	 * @since    1.0.0
 	 */
 	public function save_meta_box( $id ) {
-		$post_type = get_post_type( $id );
-		if ( in_array( $post_type, array( 'post', 'page' ), true ) ) {
-			$verify = wp_verify_nonce( $_POST['save_contributor_action_nonce_field'], 'save_contributor_action_nonce' );
-			if ($verify && isset($_POST['sd_authors'])) {
-				$prev_users = get_post_meta( $id, 'sd_contributors', true );
-				$sd_authors = array_map('sanitize_text_field', $_POST['sd_authors']);
-				
-				if ( isset( $sd_authors ) && ! empty( $sd_authors ) && wp_unslash($sd_authors) ) {
-					update_post_meta( $id, 'sd_contributors', $sd_authors );
-				}
-				$deleted_users = array_diff( $prev_users, $sd_authors );
-				foreach ( $deleted_users as $v ) {
-					$post_list = get_user_meta( $v, 'sd_contributor_post', true );
-					$key       = array_search( $id, $post_list, true );
-					unset( $post_list[ $key ] );
-					update_user_meta( $v, 'sd_contributor_post', $post_list );
-				}
-				foreach ( $sd_authors as $key => $value ) {
-					$post_list = get_user_meta( $value, 'sd_contributor_post', true );
-					if ( ! is_array( $post_list ) ) {
-						$post_list = array();
-					}
-					if ( ! in_array( $id, $post_list, true ) ) {
-						$post_list[] = $id;
-					}
-					update_user_meta( $value, 'sd_contributor_post', $post_list );
-				}
-
-				$prev_users = get_post_meta( $id, 'sd_contributors', true );
-			}
-			
-		}
+        $post_type = get_post_type( $id );
+        if ( in_array( $post_type, array( 'post', 'page' ), true ) ) {
+            $verify = wp_verify_nonce( $_POST['save_contributor_action_nonce_field'], 'save_contributor_action_nonce' );
+            if ($verify && isset($_POST['sd_authors'])) {
+                $prev_users = get_post_meta( $id, 'sd_contributors', true );
+                $prev_users = !is_array($prev_users) ?: [];
+                $sd_authors = array_map('sanitize_text_field', $_POST['sd_authors']);
+                
+                if ( isset( $sd_authors ) && ! empty( $sd_authors ) && wp_unslash($sd_authors)) {
+                    update_post_meta( $id, 'sd_contributors', $sd_authors );
+                }
+                $deleted_users = array_diff( $prev_users, $sd_authors );
+                foreach ( $deleted_users as $v ) {
+                    $post_list = get_user_meta( $v, 'sd_contributor_post', true );
+                    $key       = array_search( $id, $post_list, true );
+                    unset( $post_list[ $key ] );
+                    update_user_meta( $v, 'sd_contributor_post', $post_list );
+                }
+                foreach ( $sd_authors as $key => $value ) {
+                    $post_list = get_user_meta( $value, 'sd_contributor_post', true );
+                    if ( ! is_array( $post_list ) ) {
+                        $post_list = array();
+                    }
+                    if ( ! in_array( $id, $post_list, true ) ) {
+                        $post_list[] = $id;
+                    }
+                    update_user_meta( $value, 'sd_contributor_post', $post_list );
+                }
+            }
+            
+        }
 	}
 }
