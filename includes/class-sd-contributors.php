@@ -1,4 +1,5 @@
 <?php
+use SD\ContributorsAdmin\Sd_Contributors_Admin;
 /**
  * The file that defines the core plugin class
  *
