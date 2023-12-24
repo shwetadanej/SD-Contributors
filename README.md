@@ -30,3 +30,18 @@ This plugin allows us to select multiple authors of the page or post which can b
     5. Click ‘Install Now’.
     6. Activate the plugin within the Plugin dashboard.
 ```
+
+### Coding Standards
+
+- Library Used: [WordPress Coding Standard](https://github.com/WordPress/WordPress-Coding-Standards)
+- Coding Standard: Php Code Sniffer
+
+### Tests
+
+- PHP unit test [phpunit/phpunit](https://github.com/sebastianbergmann/phpunit)
+- Wrote test cases using [10up/wp_mock](https://github.com/10up/wp_mock)
+
+
+### Demo
+
+Login into the [Demo website](https://demo.shwetadanej.com/wp-admin/) using username "demo" and password "demo" to see the working example.
