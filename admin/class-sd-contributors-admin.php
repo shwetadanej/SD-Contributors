@@ -1,5 +1,6 @@
 <?php
 namespace SD\ContributorsAdmin;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -138,7 +139,9 @@ class Sd_Contributors_Admin {
             $verify = wp_verify_nonce( $_POST['save_contributor_action_nonce_field'], 'save_contributor_action_nonce' );
             if ($verify && isset($_POST['sd_authors'])) {
                 $prev_users = get_post_meta( $id, 'sd_contributors', true );
-                $prev_users = !is_array($prev_users) ?: [];
+				if (!is_array($prev_users)) {
+					$prev_users = array();
+				}
                 $sd_authors = array_map('sanitize_text_field', $_POST['sd_authors']);
                 
                 if ( isset( $sd_authors ) && ! empty( $sd_authors ) && wp_unslash($sd_authors)) {

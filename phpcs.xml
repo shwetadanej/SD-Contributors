@@ -4,6 +4,7 @@
 	<description>WordPress Coding Standards</description>
 
     <exclude-pattern>./vendor/*</exclude-pattern>
+	<exclude-pattern>./tests/*</exclude-pattern>
 	<rule ref="WordPress-Extra">
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
